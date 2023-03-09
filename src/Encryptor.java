@@ -128,10 +128,13 @@ public class Encryptor
         if(encryptedMessage.length() != 0) {
             fillEBlock(encryptedMessage);
             dMsg += decryptBlock();
+
         }
 
-        while((dMsg.charAt(dMsg.length() - 1) + "").equals("A")) {
-            dMsg = dMsg.substring(0, dMsg.length() - 1);
+        if(dMsg.length() != 0) {
+            while ((dMsg.charAt(dMsg.length() - 1) + "").equals("A")) {
+                dMsg = dMsg.substring(0, dMsg.length() - 1);
+            }
         }
 
         return dMsg;
