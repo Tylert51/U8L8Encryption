@@ -1,3 +1,5 @@
+import java.util.Enumeration;
+
 public class Encryptor
 {
     /** A two-dimensional array of single-character strings, instantiated in the constructor */
@@ -76,7 +78,6 @@ public class Encryptor
     {
         String eMsg = "";
 
-
         while(message.length() > numRows * numRows) {
 
             fillBlock(message);
@@ -115,9 +116,57 @@ public class Encryptor
      */
     public String decryptMessage(String encryptedMessage)
     {
-        return "";
+        String dMsg = "";
+
+
+        while(encryptedMessage.length() > numRows * numRows) {
+
+            fillEBlock(encryptedMessage);
+            dMsg += decryptBlock();
+            encryptedMessage = encryptedMessage.substring(numCols * numRows);
+        }
+        if(encryptedMessage.length() != 0) {
+            fillEBlock(encryptedMessage);
+            dMsg += decryptBlock();
+        }
+
+        while((dMsg.charAt(dMsg.length() - 1) + "").equals("A")) {
+            dMsg = dMsg.substring(0, dMsg.length() - 1);
+        }
+
+        return dMsg;
     }
 
-    private static String getDecrypt(
+    private void fillEBlock(String encrypt) {
+
+        for(int c = 0; c < numCols; c++) {
+            for(int r = 0; r < numRows; r++) {
+                int nextLetter = (numRows * c) + r;
+
+                if(nextLetter < encrypt.length()) {
+                    String letter = encrypt.charAt(nextLetter) + "";
+
+                    letterBlock[r][c] = letter;
+                } else {
+                    letterBlock[r][c] = "";
+                }
+            }
+        }
     }
+
+    private String decryptBlock() {
+        String decrypt = "";
+
+        for(int r = 0; r < numRows; r++) {
+            for(int c = 0; c < numCols; c++) {
+                decrypt += letterBlock[r][c];
+            }
+        }
+
+        return decrypt;
+
+    }
+
+
+
 }
