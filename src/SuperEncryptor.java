@@ -14,6 +14,8 @@ public class SuperEncryptor {
         shiftA = sA;
         shiftR = sR;
         shiftC = sC;
+
+        box = new String[r][c];
     }
 
     public void fillBlock(String str)
@@ -32,6 +34,83 @@ public class SuperEncryptor {
             }
         }
     }
+
+
+    public String encryptMessage(String message) {
+        String encrypted = "";
+
+        message = shiftLetters(message);
+
+        while(message.length() > rows * cols) {
+            fillBlock(message);
+
+
+            shiftRows(shiftR);
+            shiftCol(shiftC);
+
+            encrypted += readBoxBackwards();
+
+            message = message.substring(rows * cols);
+        }
+        if(message.length() != 0) {
+            fillBlock(message);
+
+            shiftRows(shiftR);
+            shiftCol(shiftC);
+
+            encrypted += readBoxBackwards();
+        }
+
+        return encrypted;
+    }
+
+    public String decryptMessage(String eMsg) {
+
+        eMsg = unshiftLetters(eMsg);
+
+        String dMsg = "";
+
+        while(eMsg.length() > rows * cols) {
+
+            fillEBlock(eMsg);
+
+            unshiftCol();
+            unshiftRows();
+
+            dMsg += readBox();
+            eMsg = eMsg.substring(rows * cols);
+        }
+        if(eMsg.length() != 0) {
+            fillEBlock(eMsg);
+
+            unshiftCol();
+            unshiftRows();
+
+            dMsg += readBox();
+        }
+
+        if(dMsg.length() != 0) {
+            while ((dMsg.charAt(dMsg.length() - 1) + "").equals("-")) {
+                dMsg = dMsg.substring(0, dMsg.length() - 1);
+            }
+        }
+
+        return dMsg;
+    }
+
+    public void fillEBlock(String str) {
+        int indOfNextLetter = 0;
+
+        for(int r = box.length - 1; r >= 0; r--) {
+            for(int c = box[0].length - 1; c >= 0; c--) {
+
+                box[r][c] = str.charAt(indOfNextLetter) + "";
+                indOfNextLetter++;
+            }
+        }
+    }
+
+
 
     public String shiftLetters(String str) {
         String capital = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -151,6 +230,30 @@ public class SuperEncryptor {
 
         return shiftCol(unshiftFactor);
 
+    }
+
+    public String readBoxBackwards() {
+        String str = "";
+
+        for(int r = box.length - 1; r >= 0; r--) {
+            for(int c = box[0].length - 1; c >= 0; c--) {
+                str += box[r][c];
+            }
+        }
+
+        return str;
+    }
+
+    public String readBox() {
+        String str = "";
+
+        for(int r = 0; r < box.length; r++) {
+            for(int c = 0; c < box[0].length; c++) {
+                str += box[r][c];
+            }
+        }
+
+        return str;
     }
 
     public void setBox(String[][] b) {

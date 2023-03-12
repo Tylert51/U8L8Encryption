@@ -3,8 +3,8 @@ import java.util.Arrays;
 public class SuperTester {
     public static void main(String[] args) {
 
-        int shiftR = 2;
-        int shiftC = 10;
+        int shiftR = 5;
+        int shiftC = 2;
 
         SuperEncryptor s = new SuperEncryptor(4, 3, 2, shiftR, shiftC);
 
@@ -13,21 +13,32 @@ public class SuperTester {
         String[][] testB = {{"H", "E", "L"},
                             {"L", "L", "O"},
                             {" ", "D", "U"},
-                            {"D", "E", "-"}};
+                            {"D", "E", " "}};
 
-        s.setBox(testB);
+        String[][] testB2 = {{"W", "H", "A"},
+                            {"T", "'", "S"},
+                            {" ", "U", "P"},
+                            {"-", "-", "-"}};
 
         /*
+
+        s.setBox(testB2);
+
         printArray(s.shiftRows(shiftR));
         System.out.println();
-        printArray(s.unshiftRows());
-
-         */
-
 
         printArray(s.shiftCol(shiftC));
         System.out.println();
-        printArray(s.unshiftCol());
+        System.out.println(s.readBoxBackwards());
+
+         */
+
+        String msg = s.encryptMessage("This isn't just a coinky dink");
+
+        System.out.println(msg);
+
+        System.out.println(s.decryptMessage(msg));
+
 
 
 

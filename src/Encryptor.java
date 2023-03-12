@@ -78,7 +78,7 @@ public class Encryptor
     {
         String eMsg = "";
 
-        while(message.length() > numRows * numRows) {
+        while(message.length() > numRows * numCols) {
 
             fillBlock(message);
             eMsg += encryptBlock();
